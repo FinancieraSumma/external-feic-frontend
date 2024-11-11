@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LeL9nAqAAAAAEO-eFKvx9kDv8e17J6g41usuFZC"></script>
+</head>
+<body>
+  <form id="demo-form" action="submit.php" method="POST">
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="password" name="password" />
+    <button type="button" id="submit-button">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('demo-form');
+    const submitButton = document.getElementById('submit-button');
+
+    submitButton.addEventListener('click', () => {
+      grecaptcha.ready(function() {
+        grecaptcha.execute('6LeL9nAqAAAAAEO-eFKvx9kDv8e17J6g41usuFZC', {action: 'submit'})
+          .then(function(token) {
+            // Add the token to the form data
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'recaptchaToken';
+            hiddenInput.value = token;
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+          });
+      });
+    });
+  </script>
+</body>
+</html>
