@@ -22,7 +22,7 @@ export class UserVerificationComponent {
       this.verificationForm.get('codigoVerificacion')?.value;
     if (codigoVerificacion) {
       this.http
-        .post('http://localhost:5000/api/verify', { codigoVerificacion })
+        .post('http://localhost:5000/api/verify', { token: codigoVerificacion })
         .subscribe(
           (response) => {
             console.log('Verification successful', response);

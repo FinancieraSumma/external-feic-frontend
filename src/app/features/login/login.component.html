@@ -1,0 +1,54 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <div>
+    <label for="nit">NIT:</label>
+    <input
+      id="nit"
+      formControlName="nit"
+      type="text"
+      placeholder="Ingrese su NIT"
+      autocomplete="off"
+    />
+    <div
+      *ngIf="
+        loginForm.get('nit')?.invalid &&
+        (loginForm.get('nit')?.touched ||
+          loginForm.get('nit')?.dirty)
+      "
+    >
+      <small *ngIf="loginForm.get('nit')?.errors?.required"
+        >NIT es requerido.</small
+      >
+      <small *ngIf="loginForm.get('nit')?.errors?.nitInvalid"
+        >NIT inválido.</small
+      >
+    </div>
+  </div>
+
+  <div>
+    <label for="password">Contraseña:</label>
+    <input
+      id="password"
+      formControlName="password"
+      type="password"
+      placeholder="Ingrese su contraseña"
+    />
+    <div
+      *ngIf="
+        loginForm.get('password')?.invalid && loginForm.get('password')?.touched
+      "
+    >
+      <small *ngIf="loginForm.get('password')?.errors?.required"
+        >La contraseña es requerida.</small
+      >
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+  <p>{{ loginMessage }}</p>
+
+  <div>
+    <a routerLink="/register">¿No tienes cuenta? Regístrate aquí</a>
+    <br />
+    <a href="#">¿Olvidaste tu contraseña?</a>
+  </div>
+</form>
