@@ -8,14 +8,23 @@ import { AppComponent } from './app.component';
 import { UserRegistrationComponent } from './features/user-registration/user-registration.component';
 import { UserVerificationComponent } from './features/user-verification/user-verification.component';
 import { LoginComponent } from './features/login/login.component';
-
+import { LoginVerificationComponent } from './features/login-verification/login-verification.component';
+import { MainComponent } from './features/main/main.component';
+import { ForgotPasswordComponent } from './features/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
+import { LogoutComponent } from './features/logout/logout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserRegistrationComponent,
     UserVerificationComponent,
-    LoginComponent
+    LoginComponent,
+    LoginVerificationComponent,
+    MainComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

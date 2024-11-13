@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,7 +13,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       nit: ['', [Validators.required, this.nitValidator]],
@@ -29,7 +30,9 @@ export class LoginComponent {
         .subscribe(
           response => {
             console.log('Login successful', response);
-            this.loginMessage = 'Inicio de sesión exitoso.';
+            this.loginMessage = 'Inicio de sesión exitoso. Se ha enviado un correo electrónico con el código de verificación de inicio de sesión.';
+
+            this.router.navigate(['/verifyLogin']);
           },
           error => {
             console.error('Login failed', error);

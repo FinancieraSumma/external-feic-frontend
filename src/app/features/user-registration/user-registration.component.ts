@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-registration',
   templateUrl: './user-registration.component.html',
-  styleUrls: ['./user-registration.component.css']
+  styleUrls: ['./user-registration.component.css'],
 })
 export class UserRegistrationComponent {
   registrationForm: FormGroup;
@@ -15,7 +22,8 @@ export class UserRegistrationComponent {
   constructor(
     private fb: FormBuilder,
     private recaptchaV3Service: ReCaptchaV3Service,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
     this.registrationForm = this.fb.group({
       nit: ['', [Validators.required, this.nitValidator]],
@@ -26,46 +34,69 @@ export class UserRegistrationComponent {
           validators: [
             Validators.required,
             Validators.minLength(8),
-            Validators.pattern('^(?=.*[a-z])(?=.*[A-Z]).{8,}$')
+            Validators.pattern(
+              '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$'
+            ),
           ],
-          updateOn: 'blur'
-        }
+          updateOn: 'blur',
+        },
       ],
-      token: ['']
+      token: [''],
     });
-        
+
     console.log('Initial form state:', this.registrationForm.value);
-    console.log('Password control initial setup:', this.registrationForm.get('password'));
+    console.log(
+      'Password control initial setup:',
+      this.registrationForm.get('password')
+    );
   }
 
   ngOnInit(): void {
-    this.registrationForm.get('password')?.valueChanges.subscribe(value => {
+    this.registrationForm.get('password')?.valueChanges.subscribe((value) => {
       console.log('Password field changed to:', value);
-      console.log('Password control status:', this.registrationForm.get('password')?.status);
-      console.log('Password control errors:', this.registrationForm.get('password')?.errors);
+      console.log(
+        'Password control status:',
+        this.registrationForm.get('password')?.status
+      );
+      console.log(
+        'Password control errors:',
+        this.registrationForm.get('password')?.errors
+      );
     });
   }
 
   onSubmit() {
     if (this.registrationForm) {
       // Mark all fields as touched so validation errors are shown
-      Object.keys(this.registrationForm.controls).forEach(field => {
+      Object.keys(this.registrationForm.controls).forEach((field) => {
         const control = this.registrationForm.get(field);
         control?.markAsTouched({ onlySelf: true });
         control?.markAsDirty({ onlySelf: true });
       });
-  
+
       if (this.registrationForm.valid) {
         // Execute reCAPTCHA and proceed only if the token is generated successfully
         this.executeRecaptcha()
           .then(() => {
             // Ensure reCAPTCHA token is patched before submitting
             console.log('Form before submit:', this.registrationForm.value); // Debug log
-  
-            this.http.post('http://localhost:5000/api/register', this.registrationForm.value)
+
+            this.http
+              .post(
+                'http://localhost:5000/api/register',
+                this.registrationForm.value
+              )
               .subscribe(
-                response => console.log('Registration successful', response),
-                error => console.error('Registration failed', error)
+                (response) => {
+                  console.log('Registration successful', response);
+                  alert(
+                    'Se ha enviado un correo electrónico con el código de verificación. Por favor revisa tu bandeja de entrada.'
+                  );
+
+                  // Redirect the user to the verification page
+                  this.router.navigate(['/verify']);
+                },
+                (error) => console.error('Registration failed', error)
               );
           })
           .catch((error) => {
@@ -93,7 +124,7 @@ export class UserRegistrationComponent {
       );
     });
   }
-  
+
   nitValidator(control: AbstractControl): ValidationErrors | null {
     const nit = control.value;
     if (!nit) {
@@ -108,7 +139,9 @@ export class UserRegistrationComponent {
     const sanitizedNit = nit.replace(/-/, '');
     const lastChar = sanitizedNit.length - 1;
     const number = sanitizedNit.substring(0, lastChar);
-    const expectedChecker = sanitizedNit.substring(lastChar, lastChar + 1).toLowerCase();
+    const expectedChecker = sanitizedNit
+      .substring(lastChar, lastChar + 1)
+      .toLowerCase();
 
     let factor = number.length + 1;
     let total = 0;
@@ -117,14 +150,13 @@ export class UserRegistrationComponent {
       const character = number.substring(i, i + 1);
       const digit = parseInt(character, 10);
 
-      total += (digit * factor);
+      total += digit * factor;
       factor = factor - 1;
     }
 
     const modulus = (11 - (total % 11)) % 11;
-    const computedChecker = (modulus === 10 ? 'k' : modulus.toString());
+    const computedChecker = modulus === 10 ? 'k' : modulus.toString();
 
     return expectedChecker === computedChecker ? null : { nitInvalid: true };
   }
-
 }

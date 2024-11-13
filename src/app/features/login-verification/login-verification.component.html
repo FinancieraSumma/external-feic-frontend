@@ -1,6 +1,6 @@
 <form [formGroup]="verificationForm" (ngSubmit)="onVerify()">
   <div>
-    <label for="codigoVerificacion">Código de Verificación:</label>
+    <label for="codigoVerificacion">Código de Verificación de Ingreso:</label>
     <input
       id="codigoVerificacion"
       formControlName="codigoVerificacion"
@@ -8,7 +8,7 @@
       placeholder="Ingrese su código de verificación"
       autocomplete="off"
     />
-    <button type="submit">Verificar Usuario</button>
+    <button type="submit">Verificar Ingreso</button>
   </div>
   <p>{{ verificationMessage }}</p>
 </form>
