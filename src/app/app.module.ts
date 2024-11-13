@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaV3Module, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
@@ -31,7 +32,8 @@ import { LogoutComponent } from './features/logout/logout.component';
     AppRoutingModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     {

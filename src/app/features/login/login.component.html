@@ -1,54 +1,118 @@
-<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-  <div>
-    <label for="nit">NIT:</label>
-    <input
-      id="nit"
-      formControlName="nit"
-      type="text"
-      placeholder="Ingrese su NIT"
-      autocomplete="off"
-    />
-    <div
-      *ngIf="
-        loginForm.get('nit')?.invalid &&
-        (loginForm.get('nit')?.touched ||
-          loginForm.get('nit')?.dirty)
-      "
-    >
-      <small *ngIf="loginForm.get('nit')?.errors?.required"
-        >NIT es requerido.</small
-      >
-      <small *ngIf="loginForm.get('nit')?.errors?.nitInvalid"
-        >NIT inválido.</small
-      >
+<div class="auth-wrapper">
+  <div class="auth-content">
+    <div class="auth-bg">
+      <span class="r"></span>
+      <span class="r s"></span>
+      <span class="r s"></span>
+      <span class="r"></span>
     </div>
-  </div>
 
-  <div>
-    <label for="password">Contraseña:</label>
-    <input
-      id="password"
-      formControlName="password"
-      type="password"
-      placeholder="Ingrese su contraseña"
-    />
-    <div
-      *ngIf="
-        loginForm.get('password')?.invalid && loginForm.get('password')?.touched
-      "
+    <form
+      class="form-info"
+      id="loginForm"
+      [formGroup]="loginForm"
+      (ngSubmit)="onLogin()"
     >
-      <small *ngIf="loginForm.get('password')?.errors?.required"
-        >La contraseña es requerida.</small
-      >
-    </div>
-  </div>
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="mb-4">
+            <i class="feather icon-unlock auth-icon"></i>
+          </div>
+          <!-- <h3 class="mb-4">Login ATT-TSC</h3> -->
+          <div class="mb-4">
+            <img
+              src="../../../../../assets/images/logofsumma.png"
+              width="100"
+              height="100"
+            />
+          </div>
+        </div>
 
-  <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
-  <p>{{ loginMessage }}</p>
+        <br />
 
-  <div>
-    <a routerLink="/register">¿No tienes cuenta? Regístrate aquí</a>
-    <br />
-    <a routerLink="/forgotPassword">¿Olvidaste tu contraseña?</a>
+        <div class="input-group mb-3">
+          <label for="nit">NIT:</label>
+          <input
+            id="nit"
+            class="form-control"
+            formControlName="nit"
+            type="text"
+            placeholder="Ingrese su NIT"
+            autocomplete="off"
+          />
+          <div
+            *ngIf="
+              loginForm.get('nit')?.invalid &&
+              (loginForm.get('nit')?.touched || loginForm.get('nit')?.dirty)
+            "
+          >
+            <small *ngIf="loginForm.get('nit')?.errors?.required"
+              >NIT es requerido.</small
+            >
+            <small *ngIf="loginForm.get('nit')?.errors?.nitInvalid"
+              >NIT inválido.</small
+            >
+          </div>
+        </div>
+
+        <div class="input-group mb-4">
+          <label for="password">Contraseña:</label>
+          <input
+            id="password"
+            class="form-control"
+            formControlName="password"
+            type="password"
+            placeholder="Ingrese su contraseña"
+            autocomplete="off"
+          />
+          <div
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              (loginForm.get('password')?.touched ||
+                loginForm.get('password')?.dirty)
+            "
+          >
+            <small *ngIf="loginForm.get('password')?.errors?.required"
+              >La contraseña es requerida.</small
+            >
+          </div>
+        </div>
+
+        <!-- <div>
+        <label for="password">Contraseña:</label>
+        <input
+          id="password"
+          formControlName="password"
+          type="password"
+          placeholder="Ingrese su contraseña"
+        />
+        <div
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          <small *ngIf="loginForm.get('password')?.errors?.required"
+            >La contraseña es requerida.</small
+          >
+        </div>
+      </div> -->
+
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="btn btn-primary mb-4"
+        >
+          Iniciar Sesión
+        </button>
+        <p>{{ loginMessage }}</p>
+
+        <div>
+          <a routerLink="/register">¿No tienes cuenta? Regístrate aquí</a>
+          <br />
+          <a routerLink="/forgotPassword">¿Olvidaste tu contraseña?</a>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
+</div>
