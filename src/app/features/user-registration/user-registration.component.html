@@ -1,82 +1,108 @@
-<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="nit">NIT:</label>
-    <input
-      id="nit"
-      formControlName="nit"
-      type="text"
-      placeholder="Ingrese su NIT"
-      autocomplete="off"
-    />
-    <div
-      *ngIf="
-        registrationForm.get('nit')?.invalid &&
-        (registrationForm.get('nit')?.touched ||
-          registrationForm.get('nit')?.dirty)
-      "
-    >
-      <small *ngIf="registrationForm.get('nit')?.errors?.required"
-        >NIT es requerido.</small
-      >
-      <small *ngIf="registrationForm.get('nit')?.errors?.nitInvalid"
-        >NIT inválido.</small
-      >
+<div class="auth-wrapper">
+  <div class="auth-content" style="padding: 20px;">
+    <div class="auth-bg">
+      <span class="r"></span>
+      <span class="r s"></span>
+      <span class="r s"></span>
+      <span class="r"></span>
     </div>
-  </div>
 
-  <div>
-    <label for="correoElectronico">Correo Electrónico:</label>
-    <input
-      id="correoElectronico"
-      formControlName="correoElectronico"
-      type="email"
-      placeholder="Ingrese su correo electrónico"
-      autocomplete="off"
-    />
-    <div
-      *ngIf="
-        registrationForm.get('correoElectronico')?.invalid &&
-        registrationForm.get('correoElectronico')?.touched
-      "
+    <form
+      class="form-info"
+      id="registrationForm"
+      [formGroup]="registrationForm"
+      (ngSubmit)="onSubmit()"
     >
-      <small *ngIf="registrationForm.get('correoElectronico')?.errors?.['required']"
-        >Correo electrónico es requerido.</small
-      >
-      <small *ngIf="registrationForm.get('correoElectronico')?.errors?.['correoElectronico']"
-        >Correo electrónico inválido.</small
-      >
-    </div>
-  </div>
+      <div class="card mx-auto" style="padding: 40px; max-width: 800px;">
+        <div class="card-body text-center">
+          <div class="mb-4">
+            <i class="feather icon-user-plus auth-icon"></i>
+          </div>
+          <div class="mb-4">
+            <img
+              src="../../../assets/images/logofsumma.png"
+              width="100"
+              height="100"
+            />
+          </div>
+        </div>
 
-  <div>
-    <label for="password">Contraseña:</label>
-    <input
-      id="password"
-      formControlName="password"
-      type="password"
-      placeholder="Ingrese su contraseña"
-      autocomplete="new-password"
-    />
-    <div
-      *ngIf="
-        registrationForm.get('password')?.invalid &&
-        registrationForm.get('password')?.touched
-      "
-    >
-      <small *ngIf="registrationForm.get('password')?.errors?.['required']"
-        >La contraseña es requerida.</small
-      >
-      <small *ngIf="registrationForm.get('password')?.errors?.['minlength']"
-        >La contraseña debe tener al menos 8 caracteres.</small
-      >
-      <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">
-        La contraseña debe contener al menos una letra mayúscula, una letra
-        minúscula, un número y un carácter especial.
-      </small>
-    </div>
-  </div>
+        <br />
 
-  <button type="submit" [disabled]="registrationForm.invalid">
-    Registrarse
-  </button>
-</form>
+        <!-- Form fields -->
+        <div class="mb-4">
+          <label for="nit">NIT:</label>
+          <input class="form-control" formControlName="nit" />
+          <div
+            *ngIf="
+              registrationForm.get('nit')?.invalid &&
+              (registrationForm.get('nit')?.touched || registrationForm.get('nit')?.dirty)
+            "
+          >
+            <small *ngIf="registrationForm.get('nit')?.errors?.required"
+              >NIT es requerido.</small
+            >
+            <small *ngIf="registrationForm.get('nit')?.errors?.nitInvalid"
+              >NIT inválido.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="correoElectronico">Correo Electrónico:</label>
+          <input class="form-control" formControlName="correoElectronico" />
+          <div
+            *ngIf="
+              registrationForm.get('correoElectronico')?.invalid &&
+              registrationForm.get('correoElectronico')?.touched
+            "
+          >
+            <small *ngIf="registrationForm.get('correoElectronico')?.errors?.['required']"
+              >Correo electrónico es requerido.</small
+            >
+            <small
+              *ngIf="
+                registrationForm.get('correoElectronico')?.errors?.[
+                  'correoElectronico'
+                ]
+              "
+              >Correo electrónico inválido.</small
+            >
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="password">Contraseña:</label>
+          <input type="password" class="form-control" formControlName="password" />
+          <div
+            *ngIf="
+              registrationForm.get('password')?.invalid &&
+              registrationForm.get('password')?.touched
+            "
+          >
+            <small *ngIf="registrationForm.get('password')?.errors?.['required']"
+              >La contraseña es requerida.</small
+            >
+            <small *ngIf="registrationForm.get('password')?.errors?.['minlength']"
+              >La contraseña debe tener al menos 8 caracteres.</small
+            >
+            <small *ngIf="registrationForm.get('password')?.errors?.['pattern']"
+              >La contraseña debe contener al menos una letra mayúscula, una letra minúscula,
+              un número y un carácter especial.</small
+            >
+          </div>
+        </div>
+
+        <div class="text-center" style="padding-left: 20px; padding-right: 20px;">
+          <button
+            type="submit"
+            [disabled]="registrationForm.invalid"
+            class="btn btn-primary mb-4"
+          >
+            Registrarse
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
