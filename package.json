@@ -18,8 +18,12 @@
     "@angular/platform-browser": "^15.2.0",
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
+    "angular-archwizard": "^7.0.0",
+    "bootstrap": "^5.3.3",
     "ng-recaptcha": "^13.2.1",
+    "ng2-toasty": "^4.0.3",
     "rxjs": "~7.8.0",
+    "tinymce": "^7.5.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
   },
