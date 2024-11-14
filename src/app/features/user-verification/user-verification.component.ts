@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class UserVerificationComponent {
   verificationForm: FormGroup;
   verificationMessage: string = '';
+  verificationSuccessful: boolean = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.verificationForm = this.fb.group({
@@ -28,6 +29,8 @@ export class UserVerificationComponent {
             console.log('Verification successful', response);
             this.verificationMessage =
               'Verificación exitosa. Ahora puedes iniciar sesión.';
+            this.verificationSuccessful = true;
+            
           },
           (error) => {
             console.error('Verification failed', error);
