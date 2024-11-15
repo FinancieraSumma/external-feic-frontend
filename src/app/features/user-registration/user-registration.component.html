@@ -124,6 +124,13 @@
             </div>
           </div>
         </div>
+        <div
+          *ngIf="registrationMessage"
+          class="alert alert-danger p-1 mt-1"
+          role="alert"
+        >
+          {{ registrationMessage }}
+        </div>
 
         <div
           class="text-center"

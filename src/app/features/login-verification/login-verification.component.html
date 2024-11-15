@@ -1,14 +1,79 @@
-<form [formGroup]="verificationForm" (ngSubmit)="onVerify()">
-  <div>
-    <label for="codigoVerificacion">Código de Verificación de Ingreso:</label>
-    <input
-      id="codigoVerificacion"
-      formControlName="codigoVerificacion"
-      type="text"
-      placeholder="Ingrese su código de verificación"
-      autocomplete="off"
-    />
-    <button type="submit">Verificar Ingreso</button>
+<div class="auth-wrapper">
+  <div class="auth-content" style="padding: 20px">
+    <div class="auth-bg">
+      <span class="r"></span>
+      <span class="r s"></span>
+      <span class="r s"></span>
+      <span class="r"></span>
+    </div>
+
+    <form
+      class="form-info"
+      id="verificationForm"
+      [formGroup]="verificationForm"
+      (ngSubmit)="onVerify()"
+    >
+      <div class="card mx-auto" style="padding: 40px; max-width: 800px">
+        <div class="card-body text-center">
+          <div class="mb-4">
+            <i class="feather icon-check-circle auth-icon"></i>
+          </div>
+          <div class="mb-4">
+            <img
+              src="../../../assets/images/logofsumma.png"
+              width="100"
+              height="100"
+            />
+          </div>
+          <h4>Verificación de Ingreso</h4>
+        </div>
+
+        <br />
+
+        <!-- Verification Code Field -->
+        <div class="mb-4">
+          <label for="verificationCode"
+            >Código de Verificación de Ingreso:</label
+          >
+          <input
+            class="form-control"
+            formControlName="verificationCode"
+            placeholder="Ingrese el código enviado a su correo"
+          />
+          <div
+            *ngIf="
+              verificationForm.get('verificationCode')?.invalid &&
+              verificationForm.get('verificationCode')?.touched
+            "
+          >
+            <small
+              *ngIf="verificationForm.get('verificationCode')?.errors?.['required']"
+              >El código de verificación es requerido.</small
+            >
+          </div>
+        </div>
+
+        <div
+          *ngIf="loginVerificationMessage"
+          class="alert alert-danger p-1 mt-1"
+          role="alert"
+        >
+          {{ loginVerificationMessage }}
+        </div>
+
+        <div
+          class="text-center"
+          style="padding-left: 20px; padding-right: 20px"
+        >
+          <button
+            type="submit"
+            [disabled]="verificationForm.invalid"
+            class="btn btn-primary mb-4"
+          >
+            Verificar
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
-  <p>{{ verificationMessage }}</p>
-</form>
+</div>

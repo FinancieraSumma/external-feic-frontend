@@ -13,6 +13,7 @@ export class UserVerificationComponent implements OnInit {
   verificationForm: FormGroup;
   verificationMessage: string = '';
   verificationSuccessful: boolean = false;
+  userVerificationMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -51,11 +52,13 @@ export class UserVerificationComponent implements OnInit {
             this.verificationSuccessful = true;
 
             this.router.navigate(['/login']);
-
           },
           (error) => {
             console.error('Verification failed', error);
             this.verificationMessage =
+              'El código de verificación es incorrecto o ha expirado.';
+
+            this.userVerificationMessage =
               'El código de verificación es incorrecto o ha expirado.';
           }
         );

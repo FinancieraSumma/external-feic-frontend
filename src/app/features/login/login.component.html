@@ -18,7 +18,6 @@
           <div class="mb-4">
             <i class="feather icon-unlock auth-icon"></i>
           </div>
-          <!-- <h3 class="mb-4">Login ATT-TSC</h3> -->
           <div class="mb-4">
             <img
               src="../../../assets/images/logofsumma.png"
@@ -53,6 +52,7 @@
             (loginForm.get('nit')?.touched || loginForm.get('nit')?.dirty)
           "
         >
+          <!--  TODO: Error toast for failed login -->
           <div
             class="alert alert-danger p-1 mt-1"
             role="alert"
@@ -111,8 +111,14 @@
             Iniciar Sesión
           </button>
         </div>
-        <p>{{ loginMessage }}</p>
-
+        <!-- Display login error message -->
+        <div
+          *ngIf="loginMessage"
+          class="alert alert-danger p-1 mt-1"
+          role="alert"
+        >
+          {{ loginMessage }}
+        </div>
         <div class="text-center">
           <a routerLink="/register">¿No tienes cuenta? Regístrate aquí</a>
           <br />
