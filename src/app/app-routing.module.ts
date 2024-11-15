@@ -8,6 +8,7 @@ import { ForgotPasswordComponent } from './features/forgot-password/forgot-passw
 import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
 import { LogoutComponent } from './features/logout/logout.component';
 import { MainComponent } from './features/main/main.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: 'register', component: UserRegistrationComponent },

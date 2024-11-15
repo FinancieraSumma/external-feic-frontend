@@ -13,6 +13,9 @@ import { MainComponent } from './features/main/main.component';
 import { ForgotPasswordComponent } from './features/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
 import { LogoutComponent } from './features/logout/logout.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastContainerComponent } from './services/toast-container.component';
+import { ToastService } from './services/toast.service';
 
 @NgModule({
   declarations: [
@@ -24,20 +27,23 @@ import { LogoutComponent } from './features/logout/logout.component';
     MainComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    LogoutComponent
+    LogoutComponent,
+    ToastContainerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     RecaptchaV3Module,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     {
       provide: RECAPTCHA_V3_SITE_KEY,
       useValue: '6LeL9nAqAAAAAEO-eFKvx9kDv8e17J6g41usuFZC' // Replace with your actual reCAPTCHA v3 site key
-    }
+    },
+    ToastService
   ],
   bootstrap: [AppComponent]
 })

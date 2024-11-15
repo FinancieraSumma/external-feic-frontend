@@ -23,7 +23,7 @@ export class UserRegistrationComponent {
     private fb: FormBuilder,
     private recaptchaV3Service: ReCaptchaV3Service,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {
     this.registrationForm = this.fb.group({
       nit: ['', [Validators.required, this.nitValidator]],
@@ -89,10 +89,6 @@ export class UserRegistrationComponent {
               .subscribe(
                 (response) => {
                   console.log('Registration successful', response);
-                  alert(
-                    'Se ha enviado un correo electrónico con el código de verificación. Por favor revisa tu bandeja de entrada.'
-                  );
-
                   // Redirect the user to the verification page
                   this.router.navigate(['/verify']);
                 },
