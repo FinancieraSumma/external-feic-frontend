@@ -1,5 +1,5 @@
 <div class="auth-wrapper">
-  <div class="auth-content" style="padding: 20px;">
+  <div class="auth-content" style="padding: 20px">
     <div class="auth-bg">
       <span class="r"></span>
       <span class="r s"></span>
@@ -13,7 +13,7 @@
       [formGroup]="registrationForm"
       (ngSubmit)="onSubmit()"
     >
-      <div class="card mx-auto" style="padding: 40px; max-width: 800px;">
+      <div class="card mx-auto" style="padding: 40px; max-width: 800px">
         <div class="card-body text-center">
           <div class="mb-4">
             <i class="feather icon-user-plus auth-icon"></i>
@@ -36,15 +36,24 @@
           <div
             *ngIf="
               registrationForm.get('nit')?.invalid &&
-              (registrationForm.get('nit')?.touched || registrationForm.get('nit')?.dirty)
+              (registrationForm.get('nit')?.touched ||
+                registrationForm.get('nit')?.dirty)
             "
           >
-            <small *ngIf="registrationForm.get('nit')?.errors?.required"
-              >NIT es requerido.</small
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
+              *ngIf="registrationForm.get('nit')?.errors?.required"
             >
-            <small *ngIf="registrationForm.get('nit')?.errors?.nitInvalid"
-              >NIT inválido.</small
+              NIT es requerido.
+            </div>
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
+              *ngIf="registrationForm.get('nit')?.errors?.nitInvalid"
             >
+              NIT inválido.
+            </div>
           </div>
         </div>
 
@@ -57,43 +66,69 @@
               registrationForm.get('correoElectronico')?.touched
             "
           >
-            <small *ngIf="registrationForm.get('correoElectronico')?.errors?.['required']"
-              >Correo electrónico es requerido.</small
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
+              *ngIf="registrationForm.get('correoElectronico')?.errors?.['required']"
             >
-            <small
+              Correo electrónico es requerido.
+            </div>
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
               *ngIf="
                 registrationForm.get('correoElectronico')?.errors?.[
                   'correoElectronico'
                 ]
               "
-              >Correo electrónico inválido.</small
             >
+              Correo electrónico inválido.
+            </div>
           </div>
         </div>
 
         <div class="mb-4">
           <label for="password">Contraseña:</label>
-          <input type="password" class="form-control" formControlName="password" />
+          <input
+            type="password"
+            class="form-control"
+            formControlName="password"
+          />
           <div
             *ngIf="
               registrationForm.get('password')?.invalid &&
               registrationForm.get('password')?.touched
             "
           >
-            <small *ngIf="registrationForm.get('password')?.errors?.['required']"
-              >La contraseña es requerida.</small
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
+              *ngIf="registrationForm.get('password')?.errors?.['required']"
             >
-            <small *ngIf="registrationForm.get('password')?.errors?.['minlength']"
-              >La contraseña debe tener al menos 8 caracteres.</small
+              La contraseña es requerida.
+            </div>
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
+              *ngIf="registrationForm.get('password')?.errors?.['minlength']"
             >
-            <small *ngIf="registrationForm.get('password')?.errors?.['pattern']"
-              >La contraseña debe contener al menos una letra mayúscula, una letra minúscula,
-              un número y un carácter especial.</small
+              La contraseña debe tener al menos 8 caracteres.
+            </div>
+            <div
+              class="alert alert-danger p-1 mt-1"
+              role="alert"
+              *ngIf="registrationForm.get('password')?.errors?.['pattern']"
             >
+              La contraseña debe contener al menos una letra mayúscula, una
+              letra minúscula, un número y un carácter especial.
+            </div>
           </div>
         </div>
 
-        <div class="text-center" style="padding-left: 20px; padding-right: 20px;">
+        <div
+          class="text-center"
+          style="padding-left: 20px; padding-right: 20px"
+        >
           <button
             type="submit"
             [disabled]="registrationForm.invalid"

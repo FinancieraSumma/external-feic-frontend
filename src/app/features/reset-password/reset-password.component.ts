@@ -16,7 +16,19 @@ export class ResetPasswordComponent {
 
   constructor(private fb: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
     this.resetPasswordForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: [
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(
+              '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$'
+            ),
+          ],
+          updateOn: 'blur',
+        },
+      ],
     });
 
     this.route.queryParams.subscribe(params => {

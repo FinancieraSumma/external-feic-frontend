@@ -53,12 +53,20 @@
             (loginForm.get('nit')?.touched || loginForm.get('nit')?.dirty)
           "
         >
-          <small *ngIf="loginForm.get('nit')?.errors?.required"
-            >NIT es requerido.</small
+          <div
+            class="alert alert-danger p-1 mt-1"
+            role="alert"
+            *ngIf="loginForm.get('nit')?.errors?.required"
           >
-          <small *ngIf="loginForm.get('nit')?.errors?.nitInvalid"
-            >NIT inválido.</small
+            NIT es requerido.
+          </div>
+          <div
+            class="alert alert-danger p-1 mt-1"
+            role="alert"
+            *ngIf="loginForm.get('nit')?.errors?.nitInvalid"
           >
+            NIT inválido.
+          </div>
         </div>
 
         <div class="form-group d-flex align-items-center">
@@ -85,9 +93,13 @@
               loginForm.get('password')?.dirty)
           "
         >
-          <small *ngIf="loginForm.get('password')?.errors?.required"
-            >La contraseña es requerida.</small
+          <div
+            class="alert alert-danger p-1 mt-1"
+            role="alert"
+            *ngIf="loginForm.get('password')?.errors?.required"
           >
+            La contraseña es requerida.
+          </div>
         </div>
 
         <div class="text-center">
