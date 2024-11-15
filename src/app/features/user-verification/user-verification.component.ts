@@ -32,7 +32,7 @@ export class UserVerificationComponent implements OnInit {
     // if (state?.fromRegistration) {
     this.toastService.show(
       'Se ha enviado un correo electrónico con el código de verificación para completar tu registro. Por favor revisa tu bandeja de entrada.',
-      { classname: 'bg-success text-light', header: 'Registro Exitoso' }
+      { classname: 'bg-success text-light', autohide: false, header: '' }
     );
     // }
   }
@@ -49,6 +49,9 @@ export class UserVerificationComponent implements OnInit {
             this.verificationMessage =
               'Verificación exitosa. Ahora puedes iniciar sesión.';
             this.verificationSuccessful = true;
+
+            this.router.navigate(['/login']);
+
           },
           (error) => {
             console.error('Verification failed', error);
