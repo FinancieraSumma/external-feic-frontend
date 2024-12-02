@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 //import { IndividualEditRoutingModule } from './individual-edit-routing.module';
-import { IndividualEditComponent } from './individual-edit.component';
 import { SharedModule } from '../../../theme/shared/shared.module'
+import { IndividualEditComponent } from './individual-edit.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {

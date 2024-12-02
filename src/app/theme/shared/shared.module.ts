@@ -30,7 +30,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   imports: [
-    NgModule,
     CommonModule,
     PerfectScrollbarModule,
     FormsModule,
@@ -44,7 +43,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ClickOutsideModule,
   ],
   exports: [
-    NgModule,
     CommonModule,
     PerfectScrollbarModule,
     FormsModule,
@@ -62,7 +60,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SpinnerComponent,
   ],
   declarations: [
-    NgModule,
     DataFilterPipe,
     //TodoListRemoveDirective,
     //TodoCardCompleteDirective,

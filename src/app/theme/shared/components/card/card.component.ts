@@ -1,7 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 /*import {AnimationBuilder, AnimationService} from 'css-animator';*/
-import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/animations';
+import {
+  animate,
+  AUTO_STYLE,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-card',
@@ -10,35 +17,40 @@ import {animate, AUTO_STYLE, state, style, transition, trigger} from '@angular/a
   providers: [NgbDropdownConfig],
   animations: [
     trigger('collapsedCard', [
-      state('collapsed, void',
+      state(
+        'collapsed, void',
         style({
           overflow: 'hidden',
           height: '0px',
         })
       ),
-      state('expanded',
+      state(
+        'expanded',
         style({
           overflow: 'hidden',
           height: AUTO_STYLE,
         })
       ),
-      transition('collapsed <=> expanded', [
-        animate('400ms ease-in-out')
-      ])
+      transition('collapsed <=> expanded', [animate('400ms ease-in-out')]),
     ]),
     trigger('cardRemove', [
-      state('open', style({
-        opacity: 1
-      })),
-      state('closed', style({
-        opacity: 0,
-        display: 'none'
-      })),
+      state(
+        'open',
+        style({
+          opacity: 1,
+        })
+      ),
+      state(
+        'closed',
+        style({
+          opacity: 0,
+          display: 'none',
+        })
+      ),
       transition('open <=> closed', animate('400ms')),
-    ])
-  ]
+    ]),
+  ],
 })
-
 export class CardComponent implements OnInit {
   @Input() cardTitle: string;
   @Input() cardClass: string;
@@ -61,7 +73,9 @@ export class CardComponent implements OnInit {
 
   public cardRemove: string;
 
-  constructor(/*animationService: AnimationService,*/ config: NgbDropdownConfig) {
+  constructor(
+    /*animationService: AnimationService,*/ config: NgbDropdownConfig
+  ) {
     config.placement = 'bottom-right';
     this.customHeader = false;
     this.options = true;
@@ -88,11 +102,17 @@ export class CardComponent implements OnInit {
     }
   }
 
-  public fullCardToggle(element: HTMLElement, animation: string, status: boolean) {
+  public fullCardToggle(
+    element: HTMLElement,
+    animation: string,
+    status: boolean
+  ) {
     animation = this.cardClass === 'full-card' ? 'zoomOut' : 'zoomIn';
-    this.fullIcon = this.cardClass === 'full-card' ? 'icon-maximize' : 'icon-minimize';
+    this.fullIcon =
+      this.cardClass === 'full-card' ? 'icon-maximize' : 'icon-minimize';
     // const duration = this.cardClass === 'full-card' ? 300 : 600;
-    this.cardClass = this.cardClass === 'full-card' ? this.cardClass : 'full-card';
+    this.cardClass =
+      this.cardClass === 'full-card' ? this.cardClass : 'full-card';
     if (status) {
       this.animation = animation;
     }
@@ -121,14 +141,16 @@ export class CardComponent implements OnInit {
   }
 
   collapsedCardToggle(event) {
-    this.collapsedCard = this.collapsedCard === 'collapsed' ? 'expanded' : 'collapsed';
-    this.collapsedIcon = this.collapsedCard === 'collapsed' ? 'icon-plus' : 'icon-minus';
+    this.collapsedCard =
+      this.collapsedCard === 'collapsed' ? 'expanded' : 'collapsed';
+    this.collapsedIcon =
+      this.collapsedCard === 'collapsed' ? 'icon-plus' : 'icon-minus';
   }
 
   cardRefresh() {
     this.loadCard = true;
     this.cardClass = 'card-load';
-    setTimeout( () => {
+    setTimeout(() => {
       this.loadCard = false;
       this.cardClass = 'expanded';
     }, 3000);
@@ -137,5 +159,4 @@ export class CardComponent implements OnInit {
   cardRemoveAction() {
     this.cardRemove = this.cardRemove === 'closed' ? 'open' : 'closed';
   }
-
 }
