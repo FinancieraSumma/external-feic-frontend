@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 export class UserRegistrationComponent {
   registrationForm: FormGroup;
   recaptchaToken: string | undefined;
+  registrationMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -89,14 +90,34 @@ export class UserRegistrationComponent {
               .subscribe(
                 (response) => {
                   console.log('Registration successful', response);
-                  alert(
-                    'Se ha enviado un correo electrónico con el código de verificación. Por favor revisa tu bandeja de entrada.'
-                  );
-
                   // Redirect the user to the verification page
                   this.router.navigate(['/verify']);
                 },
-                (error) => console.error('Registration failed', error)
+                (error) => {
+                  console.error('Registration failed', error);
+                  if (
+                    error.status === 400 &&
+                    error.error?.message === 'El NIT ya está en uso.'
+                  ) {
+                    console.error(
+                      'Registration failed: NIT already registered'
+                    );
+                    this.registrationMessage =
+                      'El NIT ya está en uso. No es posible continuar con el proceso de registro.';
+                  } else if (
+                    error.status === 400 &&
+                    error.error?.message ===
+                      'El correo electrónico ya está en uso.'
+                  ) {
+                    console.error(
+                      'Registration failed: Email already registered'
+                    );
+                    this.registrationMessage =
+                      'El correo electrónico ya está en uso. No es posible continuar con el proceso de registro.';
+                  } else {
+                    console.error('Registration failed:', error);
+                  }
+                }
               );
           })
           .catch((error) => {

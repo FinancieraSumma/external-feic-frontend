@@ -1,0 +1,2970 @@
+<!-- <ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+  [fullScreen]="true"
+>
+  <p style="color: white">Loading...</p>
+</ngx-spinner> -->
+
+<!-- ENCABEZADO Expediente -->
+<div class="row">
+    <div class="col-sm-12">
+      <app-card
+        cardTitle="{{ title }}"
+        id="Individual"
+        cardClass="Individual-list"
+        blockClass="pb-0"
+      >
+        <div class="btn-group mb-2 mr-2" ngbDropdown>
+          <button
+            type="button"
+            class="btn btn-icon btn-primary"
+            routerLink="/feic/individual"
+          >
+            <i class="feather icon-align-justify"></i>
+          </button>
+        </div>
+        <div class="btn-group mb-2 mr-2" ngbDropdown >
+          <button
+            type="button"
+            class="btn btn-primary"
+            routerLink="/feic/indedit/0"
+            disabled
+          >
+            <i class="feather icon-users"></i>Titulares
+          </button>
+        </div>
+        <div class="btn-group mb-2 mr-2" ngbDropdown >
+          <button
+            type="button"
+            class="btn btn-primary"
+          >
+            <i class="feather icon-grid"></i>Prod. & Serv.
+          </button>
+        </div>
+        <div class="btn-group mb-2 mr-2" ngbDropdown >
+          <button
+            type="button"
+            class="btn btn-icon btn-success"
+            (click)="botonGuardarMaster()"
+          >
+            <i class="feather icon-save"></i>
+          </button>
+        </div>
+        <div class="btn-group mb-2 mr-2" ngbDropdown >
+          <button
+            type="button"
+            class="btn btn-icon btn-danger"
+            (click)="botonEliminarMaster()"
+          >
+            <i class="feather icon-trash"></i>
+          </button>
+        </div>
+  
+        <form
+          #validationForm
+          [formGroup]="frmParams"
+          class="editForm"
+          novalidate
+        >
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Clave</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-clave"
+                  placeholder=""
+                  formControlName="clave"
+                  [readonly]="true"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Empresa</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="empresa"
+                >
+                  <option *ngFor="let e of mkempresaLista" [value]="e.Empresa">
+                    {{ e.Empresa }}
+                  </option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Fecha</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="validation-fechaEmision"
+                  placeholder=""
+                  formControlName="fechaEmision"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Estatus</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="estatus"
+                >
+                  <option *ngFor="let e of mkestatusLista" [value]="e.Estatus">
+                    {{ e.Estatus }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-9">
+              <div class="form-group">
+                <label class="form-label">Referencia</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-referencia"
+                  placeholder=""
+                  formControlName="referencia"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  
+  <!-- Titulares -->
+  <div class="row" *ngIf="verSeccionTitular">
+    <div class="col-sm-12">
+      <app-card cardTitle="{{ tituloTitulares }}" [options]="true">
+        <div class="btn-toolbar">
+          <div class="btn-group mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-warning"
+              (click)="botonNuevoTitular()"
+            >
+              <i class="feather icon-plus"></i>
+            </button>
+          </div>
+          <div
+            class="btn-group mr-2"
+            *ngFor="let titu of titularesList; let titIndex = index"
+          >
+            <button
+              type="button"
+              class="btn btn-info"
+              (click)="botonEditarTitular(titu._id)"
+            >
+              T{{ titIndex + 1 }}
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <br />
+        </div>
+  
+        <form
+          #validationForm
+          [formGroup]="frmParamsTit"
+          class="editForm"
+          novalidate
+          *ngIf="verCamposTitular"
+        >
+          <h5 class="mt-4">Tipo de actuación del titular</h5>
+          <hr />
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label"
+                  >El Titular actua en nombre propio</label
+                >
+                <select
+                  class="form-control"
+                  name="validation-calidadActual"
+                  placeholder=""
+                  [ngClass]="{
+                    'is-invalid':
+                      !frmParamsTit.get('tipoActuacion').valid &&
+                      (frmParamsTit.get('tipoActuacion').dirty ||
+                        frmParamsTit.get('tipoActuacion').touched ||
+                        isSubmit)
+                  }"
+                  required
+                  formControlName="tipoActuacion"
+                >
+                  <option Value="S">SI</option>
+                  <option Value="N">NO</option>
+                </select>
+                <label
+                  *ngIf="
+                    !frmParamsTit.get('tipoActuacion').valid &&
+                    (frmParamsTit.get('tipoActuacion').dirty ||
+                      frmParamsTit.get('tipoActuacion').touched ||
+                      isSubmit)
+                  "
+                  id="validation-tipoActuacion-error"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                  >Required data</label
+                >
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Calidad con la que actúa</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-calidadActual"
+                  placeholder=""
+                  [ngClass]="{
+                    'is-invalid':
+                      val_calidadActual &&
+                      !frmParamsTit.get('calidadActual').valid &&
+                      (frmParamsTit.get('calidadActual').dirty ||
+                        frmParamsTit.get('calidadActual').touched ||
+                        isSubmit)
+                  }"
+                  required
+                  formControlName="calidadActual"
+                />
+                <label
+                  *ngIf="
+                    val_calidadActual &&
+                    !frmParamsTit.get('calidadActual').valid &&
+                    (frmParamsTit.get('calidadActual').dirty ||
+                      frmParamsTit.get('calidadActual').touched ||
+                      isSubmit)
+                  "
+                  id="validation-calidadActual-error"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                  >Required data</label
+                >
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Lugar y fecha</h5>
+          <hr />
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Fecha</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="validation-fecha"
+                  placeholder=""
+                  [ngClass]="{
+                    'is-invalid':
+                      !frmParamsTit.get('fecha').valid &&
+                      (frmParamsTit.get('fecha').dirty ||
+                        frmParamsTit.get('fecha').touched ||
+                        isSubmit)
+                  }"
+                  required
+                  formControlName="fecha"
+                />
+                <label
+                  *ngIf="
+                    !frmParamsTit.get('fecha').valid &&
+                    (frmParamsTit.get('fecha').dirty ||
+                      frmParamsTit.get('fecha').touched ||
+                      isSubmit)
+                  "
+                  id="validation-fecha-error"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                  >Required data</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row" formGroupName="lugar">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">País</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="pais"
+                >
+                  <option *ngFor="let lp of catPais" [value]="lp.codigo">
+                    {{ lp.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3" *ngIf="verTLdepartamento">
+              <div class="form-group">
+                <label class="form-label">Departamento</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="departamento"
+                >
+                  <option *ngFor="let ld of catDepto" [value]="ld.codigo">
+                    {{ ld.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3" *ngIf="verTLdepartamento">
+              <div class="form-group">
+                <label class="form-label">Municipio</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="municipio"
+                >
+                  <option
+                    *ngFor="let lm of catMunicipiofilter"
+                    [value]="lm.codigo"
+                  >
+                    {{ lm.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Datos personales</h5>
+          <hr />
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Primer nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-primerNombre"
+                  placeholder=""
+                  [ngClass]="{
+                    'is-invalid':
+                      !frmParamsTit.get('cliente.primerNombre').valid &&
+                      (frmParamsTit.get('cliente.primerNombre').dirty ||
+                        frmParamsTit.get('cliente.primerNombre').touched ||
+                        isSubmit)
+                  }"
+                  required
+                  formControlName="primerNombre"
+                />
+                <label
+                  *ngIf="
+                    !frmParamsTit.get('cliente.primerNombre').valid &&
+                    (frmParamsTit.get('cliente.primerNombre').dirty ||
+                      frmParamsTit.get('cliente.primerNombre').touched ||
+                      isSubmit)
+                  "
+                  id="validation-calidadActual-error"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                  >Required data</label
+                >
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Segundo nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-segundoNombre"
+                  placeholder=""
+                  formControlName="segundoNombre"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Otros nombres</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-otrosNombres"
+                  placeholder=""
+                  formControlName="otrosNombres"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Primer apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-primerApellido"
+                  placeholder=""
+                  formControlName="primerApellido"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Segundo apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-segundoApellido"
+                  placeholder=""
+                  formControlName="segundoApellido"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Apellido casada</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-apellidoCasada"
+                  placeholder=""
+                  formControlName="apellidoCasada"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Sexo</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="sexo"
+                >
+                  <option *ngFor="let se of cat_sexo" [value]="se.codigo">
+                    {{ se.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Fecha Nacimiento</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="validation-fechaNacimiento"
+                  placeholder=""
+                  formControlName="fechaNacimiento"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Tipo Doc.Identificación</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="tipoDocumentoIdentificacion"
+                >
+                  <option
+                    *ngFor="let ctipodoc of cat_tipoDocIde"
+                    [value]="ctipodoc.codigo"
+                  >
+                    {{ ctipodoc.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Doc. Número</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-numeroDocumentoIdentificacion"
+                  placeholder=""
+                  formControlName="numeroDocumentoIdentificacion"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3" *ngIf="verTPaisPasaporte">
+              <div class="form-group">
+                <label class="form-label">País Pasaporte</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="emisionPasaporte"
+                >
+                  <option
+                    *ngFor="let pp of catPaisPasaporte"
+                    [value]="pp.codigo"
+                  >
+                    {{ pp.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">N.I.T.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-nit"
+                  placeholder=""
+                  formControlName="nit"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Nacionalidades</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-nacionalidades"
+                  placeholder=""
+                  formControlName="nacionalidades"
+                />
+              </div>
+            </div>
+          </div>
+          <div formGroupName="cliente">
+            <div class="row" formGroupName="nacimiento">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">País de nacimiento</label>
+                  <select
+                    class="form-control"
+                    placeholder=""
+                    formControlName="pais"
+                  >
+                    <option *ngFor="let np of catPaisNac" [value]="np.codigo">
+                      {{ np.descripcion }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="verNdepartamento">
+                <div class="form-group">
+                  <label class="form-label">Departamento de nacimiento</label>
+                  <select
+                    class="form-control"
+                    placeholder=""
+                    formControlName="departamento"
+                  >
+                    <option *ngFor="let nd of catDeptoNac" [value]="nd.codigo">
+                      {{ nd.descripcion }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="verNdepartamento">
+                <div class="form-group">
+                  <label class="form-label">Municipio de nacimiento</label>
+                  <select
+                    class="form-control"
+                    placeholder=""
+                    formControlName="municipio"
+                  >
+                    <option
+                      *ngFor="let nm of catMunicipiofilterNac"
+                      [value]="nm.codigo"
+                    >
+                      {{ nm.descripcion }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+  
+              <!-- <div class="col-md-3">
+                           <div class="form-group">
+                              <label class="form-label">Telefono</label>
+                              <input type="text" class="form-control" name="validation-telefonos" placeholder=""   formControlName="telefonos" >                  
+                           </div>
+                        </div> -->
+            </div>
+          </div>
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Telefono</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-telefonos"
+                  placeholder=""
+                  [ngClass]="{
+                    'is-invalid':
+                      false &&
+                      !frmParamsTit.get('telefonos').valid &&
+                      (frmParamsTit.get('telefonos').dirty ||
+                        frmParamsTit.get('telefonos').touched ||
+                        isSubmit)
+                  }"
+                  required
+                  formControlName="telefonos"
+                />
+                <label
+                  *ngIf="
+                    false &&
+                    !frmParamsTit.get('telefonos').valid &&
+                    (frmParamsTit.get('telefonos').dirty ||
+                      frmParamsTit.get('telefonos').touched ||
+                      isSubmit)
+                  "
+                  id="validation-telefonos-error"
+                  class="error jquery-validation-error small form-text invalid-feedback"
+                  >Required data</label
+                >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Condición Migratoria</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="condicionMigratoria"
+                >
+                  <option
+                    *ngFor="let cm of catCondicionMig"
+                    [value]="cm.codigo"
+                  >
+                    {{ cm.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Otra Condición Migratoria</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-otraCondicionMigratoria"
+                  placeholder=""
+                  formControlName="otraCondicionMigratoria"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Estado Civil</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  name="validation-estadoCivil"
+                  formControlName="estadoCivil"
+                >
+                  <option Value="S">Soltero</option>
+                  <option Value="C">Casado</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Profesión / Oficio</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-profesionOficio"
+                  placeholder=""
+                  formControlName="profesionOficio"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">E-mail</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-email"
+                  placeholder=""
+                  formControlName="email"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Direccion completa de residencia</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-direccionResidencia"
+                  placeholder=""
+                  formControlName="direccionResidencia"
+                />
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Residencia</h5>
+          <hr />
+          <div formGroupName="cliente">
+            <div class="row" formGroupName="residencia">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="form-label">Residencia País</label>
+                  <select
+                    class="form-control"
+                    placeholder=""
+                    formControlName="pais"
+                  >
+                    <option *ngFor="let rp of catPais" [value]="rp.codigo">
+                      {{ rp.descripcion }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="verResiDepartamento">
+                <div class="form-group">
+                  <label class="form-label">Residencia Departamento</label>
+                  <select
+                    class="form-control"
+                    placeholder=""
+                    formControlName="departamento"
+                  >
+                    <option *ngFor="let rd of catDepto" [value]="rd.codigo">
+                      {{ rd.descripcion }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3" *ngIf="verResiDepartamento">
+                <div class="form-group">
+                  <label class="form-label">Residencia Municipio</label>
+                  <select
+                    class="form-control"
+                    placeholder=""
+                    formControlName="municipio"
+                  >
+                    <option
+                      *ngFor="let rm of catResiMunicipiofilter"
+                      [value]="rm.codigo"
+                    >
+                      {{ rm.descripcion }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-md-3" *ngIf="verResiDepartamento">
+              <div class="form-group">
+                <label class="form-label">Zona</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="validation-zona"
+                  placeholder=""
+                  formControlName="zona"
+                />
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Otra Información</h5>
+          <hr />
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">El titular es C.P.E.</label>
+                <select class="form-control" placeholder="" formControlName="cpe">
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                  <option Value="NA">No aplica</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Seccion P.E.P.</h5>
+          <hr />
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">El titular es P.E.P.</label>
+                <select class="form-control" placeholder="" formControlName="pep">
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="verTitularDatosPEP">
+            <div class="col-sm-12">
+              <app-card cardTitle="Titular Datos P.E.P." [options]="false">
+                <div class="btn-toolbar">
+                  <div class="btn-group mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      (click)="botonNuevoTitPEP()"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div
+                    class="btn-group mr-2"
+                    *ngFor="
+                      let titdpep of DocumentosTitPEP;
+                      let titdpepIndex = index
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="botonEditarTitPEP(titdpep._id)"
+                    >
+                      TDP{{ titdpepIndex + 1 }}
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <br />
+                </div>
+                <form
+                  #validationForm
+                  [formGroup]="frmParamsTitPEP"
+                  class="editForm"
+                  novalidate
+                  *ngIf="verCamposTitularDatosPEP"
+                >
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Entidad</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-entidad"
+                          placeholder=""
+                          formControlName="entidad"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Puesto Desempeña</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-puestoDesempenia"
+                          placeholder=""
+                          formControlName="puestoDesempenia"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">País Entidad</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="paisEntidad"
+                        >
+                          <option
+                            *ngFor="let pe of catPais"
+                            [value]="pe.codigo"
+                          >
+                            {{ pe.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Origen Riqueza</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="origenRiqueza"
+                        >
+                          <option
+                            *ngFor="let orp of catOrigenRiqPep"
+                            [value]="orp.codigo"
+                          >
+                            {{ orp.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otro Origen Riqueza</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otroOrigenRiqueza"
+                          placeholder=""
+                          formControlName="otroOrigenRiqueza"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="botonGuardarTitPEP()"
+                    >
+                      <i class="feather icon-save"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-secondary"
+                      (click)="botonOcultarTitPEP()"
+                    >
+                      <i class="feather icon-slash"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-danger"
+                      (click)="botonEliminarTitPEP()"
+                    >
+                      <i class="feather icon-trash"></i>
+                    </button>
+                  </div>
+                </form>
+              </app-card>
+            </div>
+          </div>
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">El tiutlar es pariente de P.E.P.</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="parientePep"
+                >
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="verTitularPariPEP">
+            <div class="col-sm-12">
+              <app-card cardTitle="Titular Parientes P.E.P." [options]="false">
+                <div class="btn-toolbar">
+                  <div class="btn-group mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      (click)="botonNuevoTitPariente()"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div
+                    class="btn-group mr-2"
+                    *ngFor="
+                      let dtpp of DocumentosTitPariPEP;
+                      let dtppIndex = index
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="botonEditarTitPariente(dtpp._id)"
+                    >
+                      TPP{{ dtppIndex + 1 }}
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <br />
+                </div>
+                <form
+                  #validationForm
+                  [formGroup]="frmParamsTitPariPEP"
+                  class="editForm"
+                  novalidate
+                  *ngIf="verCamposTitularPariPEP"
+                >
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Parentesco</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="parentesco"
+                        >
+                          <option
+                            *ngFor="let p of catPerentescoPep"
+                            [value]="p.codigo"
+                          >
+                            {{ p.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otro Parentesco</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otroParentesco"
+                          placeholder=""
+                          formControlName="otroParentesco"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" formGroupName="complementoPAPEP">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerNombre"
+                          placeholder=""
+                          formControlName="primerNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoNombre"
+                          placeholder=""
+                          formControlName="segundoNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otros Nombres</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otrosNombres"
+                          placeholder=""
+                          formControlName="otrosNombres"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerApellido"
+                          placeholder=""
+                          formControlName="primerApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoApellido"
+                          placeholder=""
+                          formControlName="segundoApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Apellido Casada</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-apellidoCasada"
+                          placeholder=""
+                          formControlName="apellidoCasada"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Sexo</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="sexo"
+                        >
+                          <option value="P">Masculino</option>
+                          <option value="D">Femenino</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Condición</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-condicion"
+                          placeholder=""
+                          formControlName="condicion"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Entidad</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-entidad"
+                          placeholder=""
+                          formControlName="entidad"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Puesto Desempeña</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-puestoDesempenia"
+                          placeholder=""
+                          formControlName="puestoDesempenia"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">País Entidad</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="paisEntidad"
+                        >
+                          <option
+                            *ngFor="let pe of catPais"
+                            [value]="pe.codigo"
+                          >
+                            {{ pe.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="botonGuardarTitPariente()"
+                    >
+                      <i class="feather icon-save"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-secondary"
+                      (click)="botonOcultarTitPariente()"
+                    >
+                      <i class="feather icon-slash"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-danger"
+                      (click)="botonEliminarTitPariente()"
+                    >
+                      <i class="feather icon-trash"></i>
+                    </button>
+                  </div>
+                </form>
+              </app-card>
+            </div>
+          </div>
+          <div class="row" formGroupName="cliente">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">El tiutlar es asociado de P.E.P.</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="asociadoPep"
+                >
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="verTitularAsoPEP">
+            <div class="col-sm-12">
+              <app-card cardTitle="Titular Asociados P.E.P." [options]="false">
+                <div class="btn-toolbar">
+                  <div class="btn-group mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      (click)="botonNuevoTitAsociado()"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div
+                    class="btn-group mr-2"
+                    *ngFor="
+                      let dtap of DocumentosTitAsoPEP;
+                      let dtapIndex = index
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="botonEditarTitAsociado(dtap._id)"
+                    >
+                      TAP{{ dtapIndex + 1 }}
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <br />
+                </div>
+                <form
+                  #validationForm
+                  [formGroup]="frmParamsTitAsoPEP"
+                  class="editForm"
+                  novalidate
+                  *ngIf="verCamposTitularAsoPEP"
+                >
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Motivo Asociacion</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="motivoAsociacion"
+                        >
+                          <option
+                            *ngFor="let ma of catMovAsociacionPep"
+                            [value]="ma.codigo"
+                          >
+                            {{ ma.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otro MotivoAsociación</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otroMotivoAsociacion"
+                          placeholder=""
+                          formControlName="otroMotivoAsociacion"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" formGroupName="complementoPAPEP">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerNombre"
+                          placeholder=""
+                          formControlName="primerNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoNombre"
+                          placeholder=""
+                          formControlName="segundoNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otros Nombres</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otrosNombres"
+                          placeholder=""
+                          formControlName="otrosNombres"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerApellido"
+                          placeholder=""
+                          formControlName="primerApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoApellido"
+                          placeholder=""
+                          formControlName="segundoApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Apellido Casada</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-apellidoCasada"
+                          placeholder=""
+                          formControlName="apellidoCasada"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Sexo</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="sexo"
+                        >
+                          <option value="M">Masculino</option>
+                          <option value="F">Femenino</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Condición</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-condicion"
+                          placeholder=""
+                          formControlName="condicion"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Entidad</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-entidad"
+                          placeholder=""
+                          formControlName="entidad"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Puesto Desempeña</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-puestoDesempenia"
+                          placeholder=""
+                          formControlName="puestoDesempenia"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">País Entidad</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="paisEntidad"
+                        >
+                          <option
+                            *ngFor="let pe of catPais"
+                            [value]="pe.codigo"
+                          >
+                            {{ pe.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="botonGuardarTitAsociado()"
+                    >
+                      <i class="feather icon-save"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-secondary"
+                      (click)="botonOcultarTitAsociado()"
+                    >
+                      <i class="feather icon-slash"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-danger"
+                      (click)="botonEliminarTitAsociado()"
+                    >
+                      <i class="feather icon-trash"></i>
+                    </button>
+                  </div>
+                </form>
+              </app-card>
+            </div>
+          </div>
+          <div class="btn-group mb-2 mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-success"
+              (click)="botonGuardarTitular()"
+            >
+              <i class="feather icon-save"></i>
+            </button>
+          </div>
+          <div class="btn-group mb-2 mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-secondary"
+              (click)="botonOcultarTitular()"
+            >
+              <i class="feather icon-slash"></i>
+            </button>
+          </div>
+          <div class="btn-group mb-2 mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-danger"
+              (click)="botonBorrarTitular()"
+            >
+              <i class="feather icon-trash"></i>
+            </button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+  
+  <!-- Informacion Economica -->
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- <div class="row"  > -->
+      <div class="row" *ngIf="verCamposInfEco">
+        <div class="col-sm-12">
+          <app-card
+            cardTitle="{{ tituloInfoEco }}"
+            id="Individual"
+            cardClass="Individual-list"
+            blockClass="pb-0"
+          >
+            <div class="btn-toolbar">
+              <div class="btn-group mr-2">
+                <button
+                  type="button"
+                  class="btn btn-icon btn-warning"
+                  (click)="botonNuevoInfoEco()"
+                >
+                  <i class="feather icon-plus"></i>
+                </button>
+              </div>
+              <div
+                class="btn-group mr-2"
+                *ngFor="let infoeco of mkDocumentoInfoEco; let infoIndex = index"
+              >
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="botonEditarInfoEco(infoeco._id)"
+                >
+                  IE{{ infoIndex + 1 }}
+                </button>
+              </div>
+            </div>
+  
+            <div class="row">
+              <br />
+            </div>
+            <form
+              #validationForm
+              [formGroup]="frmParamsInfoEco"
+              class="editForm"
+              novalidate
+              *ngIf="verEdicionInfEco"
+            >
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-label">Fecha</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      name="validation-clave"
+                      placeholder=""
+                      formControlName="fecha"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label"
+                      >Actividad económica del titular según en el registro
+                      tributario unificado</label
+                    >
+                    <textarea
+                      class="form-control"
+                      name="validation-actividadEconomica"
+                      placeholder=""
+                      formControlName="actividadEconomica"
+                    >
+                    </textarea>
+                  </div>
+                </div>
+              </div>
+              <div formArrayName="montoIngresos">
+                <h5 class="mt-4">Monto mensual aproximado de los ingresos</h5>
+                <hr />
+                <!-- <div
+                  *ngFor="
+                    let monto of frmParamsInfoEco.get('montoIngresos').controls;
+                    let miIndex = index
+                  "
+                >
+                  <div class="row" [formGroupName]="miIndex">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Moneda</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="moneda"
+                        >
+                          <option
+                            *ngFor="let mon of catMoneda"
+                            [value]="mon.codigo"
+                          >
+                            {{ mon.descripcion }} ({{ mon.codigo }})
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Monto</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            currencyMask
+                            class="form-control"
+                            name="validation-monto"
+                            placeholder=""
+                            formControlName="monto"
+                          />
+                          <span class="input-group-btn">
+                            <button
+                              type="button"
+                              class="btn btn-icon btn-danger"
+                              (click)="del_montoIngresos(miIndex)"
+                            >
+                              <i class="feather icon-trash"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+                <div
+                  class="btn-group mb-2 mr-2"
+                  ngbDropdown
+                >
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    (click)="add_montoIngresos()"
+                  >
+                    <i class="feather icon-plus"></i>
+                  </button>
+                </div>
+              </div>
+  
+              <div formArrayName="negocioPropio">
+                <h5 class="mt-4">Fuentes de ingresos</h5>
+  
+                <h5 class="mt-4">Negocio Propio</h5>
+                <hr />
+                <!-- <div *ngFor="let np of (frmParamsInfoEco.get('negocioPropio') as FormArray).controls; let npIndex = index">
+                  <div class="row" [formGroupName]="npIndex">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label" *ngIf="npIndex == 0"
+                          >Nombre comercial del negocio</label
+                        >
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="validation-nombreComercial"
+                            placeholder=""
+                            formControlName="nombreComercial"
+                          />
+                          <span class="input-group-btn">
+                            <button
+                              type="button"
+                              class="btn btn-icon btn-danger"
+                              (click)="del_negocioPropio(npIndex)"
+                            >
+                              <i class="feather icon-trash"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+                <div
+                  class="btn-group mb-2 mr-2"
+                  ngbDropdown
+                >
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    (click)="add_negocioPropio()"
+                  >
+                    <i class="feather icon-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div formArrayName="relacionDependencia">
+                <h5 class="mt-4">Trabajos en relación de Dependencia</h5>
+                <hr />
+                <div
+                  *ngFor="
+                    let rd of relacionDependencia().controls;
+                    let rdIndex = index
+                  "
+                >
+                  <div class="row" >
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label" *ngIf="rdIndex == 0"
+                          >Nombre del empleador</label
+                        >
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="validation-nombreEmpleador"
+                            placeholder=""
+                            formControlName="nombreEmpleador"
+                          />
+                          <span class="input-group-btn">
+                            <button
+                              type="button"
+                              class="btn btn-icon btn-danger"
+                              (click)="del_relacionDependencia(rdIndex)"
+                            >
+                              <i class="feather icon-trash"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="btn-group mb-2 mr-2"
+                  ngbDropdown
+                >
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    (click)="add_relacionDependencia()"
+                  >
+                    <i class="feather icon-plus"></i>
+                  </button>
+                </div>
+              </div>
+  
+              <div formArrayName="otrosIngresos">
+                <h5 class="mt-4">Otros Ingresos</h5>
+                <hr />
+                <div
+                  *ngFor="let oi of otrosIngresos().controls; let oiIndex = index"
+                >
+                  <div class="row" >
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="form-label" *ngIf="oiIndex == 0"
+                          >Fuentes Ingreso</label
+                        >
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="validation-otrasFuentesIngreso"
+                            placeholder=""
+                            formControlName="otrasFuentesIngreso"
+                          />
+                          <span class="input-group-btn">
+                            <button
+                              type="button"
+                              class="btn btn-icon btn-danger"
+                              (click)="del_otrosIngresos(oiIndex)"
+                            >
+                              <i class="feather icon-trash"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="btn-group mb-2 mr-2"
+                  ngbDropdown
+                >
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    (click)="add_otrosIngresos()"
+                  >
+                    <i class="feather icon-plus"></i>
+                  </button>
+                </div>
+              </div>
+  
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="form-label"
+                      >Especificar otras fuentes de ingreso</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="validation-fuenteIngreso"
+                      placeholder=""
+                      formControlName="fuenteIngreso"
+                    />
+                  </div>
+                </div>
+              </div>
+  
+              <div formArrayName="montoEgresos">
+                <h5 class="mt-4">Monto mensual aproximado de los egresos</h5>
+                <hr />
+                <div
+                  *ngFor="let me of montoEgresos().controls; let meIndex = index"
+                >
+                  <div class="row" >
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Moneda</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="moneda"
+                        >
+                          <option
+                            *ngFor="let mon of catMoneda"
+                            [value]="mon.codigo"
+                          >
+                            {{ mon.descripcion }} ({{ mon.codigo }})
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+  
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Monto</label>
+                        <div class="input-group">
+                          <input
+                            currencyMask
+                            type="text"
+                            class="form-control"
+                            name="validation-monto"
+                            placeholder=""
+                            formControlName="monto"
+                          />
+                          <span class="input-group-btn">
+                            <button
+                              type="button"
+                              class="btn btn-icon btn-danger"
+                              (click)="del_montoEgresos(meIndex)"
+                            >
+                              <i class="feather icon-trash"></i>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="btn-group mb-2 mr-2"
+                  ngbDropdown
+                >
+                  <button
+                    type="button"
+                    class="btn btn-icon btn-success"
+                    (click)="add_montoEgresos()"
+                  >
+                    <i class="feather icon-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label"
+                      >Propósito de la relación comercial</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="validation-propositoRC"
+                      placeholder=""
+                      formControlName="propositoRC"
+                    />
+                  </div>
+                </div>
+              </div>
+  
+              <div class="btn-group mb-2 mr-2">
+                <button
+                  type="button"
+                  class="btn btn-icon btn-success"
+                  (click)="botonGuardarInfoEco()"
+                >
+                  <i class="feather icon-save"></i>
+                </button>
+              </div>
+              <div class="btn-group mb-2 mr-2">
+                <button
+                  type="button"
+                  class="btn btn-icon btn-secondary"
+                  (click)="botonOcultarInfoEco()"
+                >
+                  <i class="feather icon-slash"></i>
+                </button>
+              </div>
+              <div class="btn-group mb-2 mr-2">
+                <button
+                  type="button"
+                  class="btn btn-icon btn-danger"
+                  (click)="botonBorrarInfoEco()"
+                >
+                  <i class="feather icon-trash"></i>
+                </button>
+              </div>
+            </form>
+          </app-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Representante -->
+  <div class="row" *ngIf="verSeccionRepresentante">
+    <div class="col-sm-12">
+      <app-card
+        cardTitle="{{ tituloRepresentante }}"
+        id="representante"
+        cardClass="representante-list"
+        blockClass="pb-0"
+      >
+        <div class="btn-toolbar">
+          <div class="btn-group mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-icon btn-warning"
+              (click)="botonNuevoInfoRep()"
+            >
+              <i class="feather icon-plus"></i>
+            </button>
+          </div>
+          <div
+            class="btn-group mr-2"
+            *ngFor="let rep of documentosRep; let infoIndex = index"
+          >
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="botonEditarInfoRep(rep._id)"
+            >
+              R{{ infoIndex + 1 }}
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <br />
+        </div>
+        <form
+          #validationForm
+          [formGroup]="frmParamsRepresentante"
+          class="editForm"
+          novalidate
+          *ngIf="verCamposRepresentante"
+        >
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Primer nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-primerNombre"
+                  placeholder=""
+                  formControlName="primerNombre"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Segundo nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-segundoNombre"
+                  placeholder=""
+                  formControlName="segundoNombre"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Otros nombres</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-otrosNombres"
+                  placeholder=""
+                  formControlName="otrosNombres"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Primer apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-primerApellido"
+                  placeholder=""
+                  formControlName="primerApellido"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Segundo apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-segundoApellido"
+                  placeholder=""
+                  formControlName="segundoApellido"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Apellido casada</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-apellidoCasada"
+                  placeholder=""
+                  formControlName="apellidoCasada"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Sexo</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  name="validation-sexo"
+                  formControlName="sexo"
+                >
+                  <option Value="M">Masculino</option>
+                  <option Value="F">Femenino</option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Fecha Nacimiento</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="validation-fechaNacimiento"
+                  placeholder=""
+                  formControlName="fechaNacimiento"
+                />
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Nacionalidades</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-nacionalidades"
+                  placeholder=""
+                  formControlName="nacionalidades"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row" formGroupName="nacimiento">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">País de nacimiento</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="pais"
+                >
+                  <option *ngFor="let np of catPaisNac" [value]="np.codigo">
+                    {{ np.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3" *ngIf="verNdepartamento">
+              <div class="form-group">
+                <label class="form-label">Departamento de nacimiento</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="departamento"
+                >
+                  <option *ngFor="let nd of catDeptoNac" [value]="nd.codigo">
+                    {{ nd.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3" *ngIf="verNdepartamento">
+              <div class="form-group">
+                <label class="form-label">Municipio de nacimiento</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="municipio"
+                >
+                  <option
+                    *ngFor="let nm of catMunicipiofilterNac"
+                    [value]="nm.codigo"
+                  >
+                    {{ nm.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Condición Migratoría</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="condicionMigratoria"
+                >
+                  <option
+                    *ngFor="let cm of catCondicionMig"
+                    [value]="cm.codigo"
+                  >
+                    {{ cm.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Otra Condición Migratoria</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-otraCondicionMigratoria"
+                  placeholder=""
+                  formControlName="otraCondicionMigratoria"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Estado Civil</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  name="validation-estadoCivil"
+                  formControlName="estadoCivil"
+                >
+                  <option Value="S">Soltero</option>
+                  <option Value="C">Casado</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Profesión / Oficio</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-profesionOficio"
+                  placeholder=""
+                  formControlName="profesionOficio"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">E-mail</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-email"
+                  placeholder=""
+                  formControlName="email"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Direccion completa de residencia</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="validation-direccionResidencia"
+                  placeholder=""
+                  formControlName="direccionResidencia"
+                />
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Residencia</h5>
+          <hr />
+  
+          <div class="row" formGroupName="residencia">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Residencia País</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="pais"
+                >
+                  <option *ngFor="let rp of catPais" [value]="rp.codigo">
+                    {{ rp.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Residencia Departamento</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="departamento"
+                >
+                  <option *ngFor="let rd of catDepto" [value]="rd.codigo">
+                    {{ rd.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Residencia Municipio</label>
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="municipio"
+                >
+                  <option
+                    *ngFor="let rm of catMunicipiofilter"
+                    [value]="rm.codigo"
+                  >
+                    {{ rm.descripcion }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+  
+          <h5 class="mt-4">Otra Información</h5>
+          <hr />
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">El titular es C.P.E.</label>
+                <select class="form-control" placeholder="" formControlName="cpe">
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                  <option Value="NA">No aplica</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <h5 class="mt-4">Seccion P.E.P.</h5>
+          <hr />
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">El representante es P.E.P.</label>
+                <select class="form-control" placeholder="" formControlName="pep">
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="verRepDatosPEP">
+            <div class="col-sm-12">
+              <app-card cardTitle="Representante Datos P.E.P." [options]="false">
+                <div class="btn-toolbar">
+                  <div class="btn-group mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-warning"
+                      (click)="botonNuevoRepPEP()"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <div
+                    class="btn-group mr-2"
+                    *ngFor="let rdpep of DocumentosRepPEP; let rdpepIndex = index"
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="botonEditarRepPEP(rdpep._id)"
+                    >
+                      RDP{{ rdpepIndex + 1 }}
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <br />
+                </div>
+                <form
+                  #validationForm
+                  [formGroup]="frmParamsRepPEP"
+                  class="editForm"
+                  novalidate
+                  *ngIf="verCamposRepDatosPEP"
+                >
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Entidad</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-entidad"
+                          placeholder=""
+                          formControlName="entidad"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Puesto Desempeña</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-puestoDesempenia"
+                          placeholder=""
+                          formControlName="puestoDesempenia"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">País Entidad</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="paisEntidad"
+                        >
+                          <option
+                            *ngFor="let pe of catPais"
+                            [value]="pe.codigo"
+                          >
+                            {{ pe.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Origen Riqueza</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="origenRiqueza"
+                        >
+                          <option
+                            *ngFor="let orp of catOrigenRiqPep"
+                            [value]="orp.codigo"
+                          >
+                            {{ orp.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otro Origen Riqueza</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otroOrigenRiqueza"
+                          placeholder=""
+                          formControlName="otroOrigenRiqueza"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="botonGuardarRepPEP()"
+                    >
+                      <i class="feather icon-save"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-secondary"
+                      (click)="botonOcultarRepPEP()"
+                    >
+                      <i class="feather icon-slash"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-danger"
+                      (click)="botonEliminarRepPEP()"
+                    >
+                      <i class="feather icon-trash"></i>
+                    </button>
+                  </div>
+                </form>
+              </app-card>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label"
+                  >El representante es pariente de P.E.P.</label
+                >
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="parientePep"
+                >
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="verRepPariPEP">
+            <div class="col-sm-12">
+              <app-card
+                cardTitle="Representante Perientes P.E.P."
+                [options]="false"
+              >
+                <div class="btn-toolbar">
+                  <div class="btn-group mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-warning"
+                      (click)="botonNuevoRepPariente()"
+                    >
+                      <i class="feather icon-plus"></i>
+                    </button>
+                  </div>
+                  <div
+                    class="btn-group mr-2"
+                    *ngFor="
+                      let rppep of DocumentosRepPariPEP;
+                      let rppepIndex = index
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="botonEditarRepPariente(rppep._id)"
+                    >
+                      RPP{{ rppepIndex + 1 }}
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <br />
+                </div>
+                <form
+                  #validationForm
+                  [formGroup]="frmParamsRepPariPEP"
+                  class="editForm"
+                  novalidate
+                  *ngIf="verCamposRepPariPEP"
+                >
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Parentesco</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="parentesco"
+                        >
+                          <option
+                            *ngFor="let p of catPerentescoPep"
+                            [value]="p.codigo"
+                          >
+                            {{ p.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otro Parentesco</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otroParentesco"
+                          placeholder=""
+                          formControlName="otroParentesco"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" formGroupName="complementoPAPEP">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerNombre"
+                          placeholder=""
+                          formControlName="primerNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoNombre"
+                          placeholder=""
+                          formControlName="segundoNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otros Nombres</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otrosNombres"
+                          placeholder=""
+                          formControlName="otrosNombres"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerApellido"
+                          placeholder=""
+                          formControlName="primerApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoApellido"
+                          placeholder=""
+                          formControlName="segundoApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Apellido Casada</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-apellidoCasada"
+                          placeholder=""
+                          formControlName="apellidoCasada"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Sexo</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="sexo"
+                        >
+                          <option value="P">Masculino</option>
+                          <option value="D">Femenino</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Condición</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-condicion"
+                          placeholder=""
+                          formControlName="condicion"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Entidad</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-entidad"
+                          placeholder=""
+                          formControlName="entidad"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Puesto Desempeña</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-puestoDesempenia"
+                          placeholder=""
+                          formControlName="puestoDesempenia"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">País Entidad</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="paisEntidad"
+                        >
+                          <option
+                            *ngFor="let pe of catPais"
+                            [value]="pe.codigo"
+                          >
+                            {{ pe.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="botonGuardarRepPariente()"
+                    >
+                      <i class="feather icon-save"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-secondary"
+                      (click)="botonOcultarRepPariente()"
+                    >
+                      <i class="feather icon-slash"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-danger"
+                      (click)="botonEliminarRepPariente()"
+                    >
+                      <i class="feather icon-trash"></i>
+                    </button>
+                  </div>
+                </form>
+              </app-card>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label"
+                  >El representante es asociado de P.E.P.</label
+                >
+                <select
+                  class="form-control"
+                  placeholder=""
+                  formControlName="asociadoPep"
+                >
+                  <option Value="N">NO</option>
+                  <option Value="S">SI</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="verRepAsoPEP">
+            <div class="col-sm-12">
+              <app-card
+                cardTitle="Representante Asociados P.E.P."
+                [options]="false"
+              >
+                <div class="btn-toolbar">
+                  <div class="btn-group mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-warning"
+                      (click)="botonNuevoRepAsociado()"
+                    >
+                      <i class="feather icon-plus"></i>
+                    </button>
+                  </div>
+                  <div
+                    class="btn-group mr-2"
+                    *ngFor="
+                      let rapep of DocumentosRepAsoPEP;
+                      let rapepIndex = index
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      (click)="botonEditarRepAsociado(rapep._id)"
+                    >
+                      RAP{{ rapepIndex + 1 }}
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <br />
+                </div>
+                <form
+                  #validationForm 
+                  [formGroup]="frmParamsRepAsoPEP"
+                  class="editForm"
+                  novalidate
+                  *ngIf="verCamposRepAsoPEP"
+                >
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Motivo Asociacion</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="motivoAsociacion"
+                        >
+                          <option
+                            *ngFor="let ma of catMovAsociacionPep"
+                            [value]="ma.codigo"
+                          >
+                            {{ ma.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otro MotivoAsociación</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otroMotivoAsociacion"
+                          placeholder=""
+                          formControlName="otroMotivoAsociacion"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" formGroupName="complementoPAPEP">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerNombre"
+                          placeholder=""
+                          formControlName="primerNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoNombre"
+                          placeholder=""
+                          formControlName="segundoNombre"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Otros Nombres</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-otrosNombres"
+                          placeholder=""
+                          formControlName="otrosNombres"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Primer Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-primerApellido"
+                          placeholder=""
+                          formControlName="primerApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Segundo Apellido</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-segundoApellido"
+                          placeholder=""
+                          formControlName="segundoApellido"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Apellido Casada</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-apellidoCasada"
+                          placeholder=""
+                          formControlName="apellidoCasada"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Sexo</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="sexo"
+                        >
+                          <option value="M">Masculino</option>
+                          <option value="F">Femenino</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Condición</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-condicion"
+                          placeholder=""
+                          formControlName="condicion"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Entidad</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-entidad"
+                          placeholder=""
+                          formControlName="entidad"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">Puesto Desempeña</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="validation-puestoDesempenia"
+                          placeholder=""
+                          formControlName="puestoDesempenia"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label class="form-label">País Entidad</label>
+                        <select
+                          class="form-control"
+                          placeholder=""
+                          formControlName="paisEntidad"
+                        >
+                          <option
+                            *ngFor="let pe of catPais"
+                            [value]="pe.codigo"
+                          >
+                            {{ pe.descripcion }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-success"
+                      (click)="botonGuardarRepAsociado()"
+                    >
+                      <i class="feather icon-save"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-secondary"
+                      (click)="botonOcultarRepAsociado()"
+                    >
+                      <i class="feather icon-slash"></i>
+                    </button>
+                  </div>
+                  <div class="btn-group mb-2 mr-2">
+                    <button
+                      type="button"
+                      class="btn btn-icon btn-danger"
+                      (click)="botonEliminarRepAsociado()"
+                    >
+                      <i class="feather icon-trash"></i>
+                    </button>
+                  </div>
+                </form>
+              </app-card>
+            </div>
+          </div>
+          <div class="btn-group mb-2 mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-success"
+              (click)="botonGuardarInfoRep()"
+            >
+              <i class="feather icon-save"></i>
+            </button>
+          </div>
+          <div class="btn-group mb-2 mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-secondary"
+              (click)="botonOcultarInfoRep()"
+            >
+              <i class="feather icon-slash"></i>
+            </button>
+          </div>
+          <div class="btn-group mb-2 mr-2">
+            <button
+              type="button"
+              class="btn btn-icon btn-danger"
+              (click)="botonBorrarInfoRep()"
+            >
+              <i class="feather icon-trash"></i>
+            </button>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>

@@ -8,6 +8,8 @@ import { ForgotPasswordComponent } from './features/forgot-password/forgot-passw
 import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
 import { LogoutComponent } from './features/logout/logout.component';
 import { MainComponent } from './features/main/main.component';
+import { AuthGuard } from './auth.guard';
+import { IndividualEditComponent } from './features/individual/individual-edit/individual-edit.component';
 
 const routes: Routes = [
   { path: 'register', component: UserRegistrationComponent },
@@ -18,7 +20,8 @@ const routes: Routes = [
   { path: 'resetPassword', component: ResetPasswordComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'main', component: MainComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'individual', component: IndividualEditComponent }
 ];
 
 @NgModule({

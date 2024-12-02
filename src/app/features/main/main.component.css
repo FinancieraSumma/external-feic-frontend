@@ -1,0 +1,28 @@
+body {
+  background-color: #f8f9fa; /* Light gray background */
+}
+
+.container {
+  margin-top: 100px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1 {
+  font-weight: bold;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+#content-area {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+.content-area-expanded {
+  margin-left: 0;
+}

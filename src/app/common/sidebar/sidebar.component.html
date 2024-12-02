@@ -1,0 +1,38 @@
+<!-- sidebar.component.html -->
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div [ngbCollapse]="isCollapsed" class="sidebar bg-light border-end">
+    <div class="sidebar-header p-3">
+      <h4>Menu</h4>
+    </div>
+    <ul ngbNav class="flex-column nav-pills">
+      <li ngbNavItem>
+        <a ngbNavLink routerLink="/home">Inicio</a>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink routerLink="/individual">FEIC</a>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink routerLink="/account">Perfil</a>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink routerLink="/config">Configuración</a>
+      </li>
+      <li ngbNavItem>
+        <a ngbNavLink routerLink="/logout">Cerrar sesión</a>
+    </ul>
+  </div>
+
+  <!-- Page Content -->
+  <div class="page-content flex-grow-1">
+    <nav class="navbar navbar-light bg-light">
+      <button class="btn btn-primary" (click)="toggleSidebar()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+    <div class="container-fluid p-4">
+      <!-- Your page content goes here -->
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

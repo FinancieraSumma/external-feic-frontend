@@ -1,4 +1,20 @@
-<h1>SUMMA - FEIC</h1>
-<p>Página principal</p>
+<div class="d-flex">
+  <app-sidebar></app-sidebar>
 
-<app-logout></app-logout>
+  <!-- Content Area -->
+  <div id="content-area" class="flex-grow-1 p-4">
+    <div class="container mt-5 text-center">
+      <img
+        src="../../../assets/images/logofsumma.png"
+        alt="Logo SUMMA"
+        class="mb-4"
+        style="max-width: 150px;"
+      />
+      <h1 class="display-4 text-primary">SUMMA - FEIC</h1>
+      <p class="lead">Bienvenido a la página principal</p>
+      <button class="btn btn-primary mt-3" (click)="onLogout()">
+        Cerrar Sesión
+      </button>
+    </div>
+  </div>
+</div>
