@@ -16,6 +16,7 @@ import { LogoutComponent } from './features/logout/logout.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastContainerComponent } from './services/toast-container.component';
 import { ToastService } from './services/toast.service';
+import { SidebarComponent } from './common/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ToastService } from './services/toast.service';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     LogoutComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
