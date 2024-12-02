@@ -65,7 +65,7 @@
       </div>
 
       <form
-        #validationForm="ngForm"
+        #validationForm
         [formGroup]="frmParams"
         class="editForm"
         novalidate
@@ -93,7 +93,7 @@
                 placeholder=""
                 formControlName="empresa"
               >
-                <option *ngFor="let e of mkempresaLista" [ngValue]="e.Empresa">
+                <option *ngFor="let e of mkempresaLista" [value]="e.Empresa">
                   {{ e.Empresa }}
                 </option>
               </select>
@@ -121,7 +121,7 @@
                 placeholder=""
                 formControlName="estatus"
               >
-                <option *ngFor="let e of mkestatusLista" [ngValue]="e.Estatus">
+                <option *ngFor="let e of mkestatusLista" [value]="e.Estatus">
                   {{ e.Estatus }}
                 </option>
               </select>
@@ -302,7 +302,7 @@
                 placeholder=""
                 formControlName="pais"
               >
-                <option *ngFor="let lp of catPais" [ngValue]="lp.codigo">
+                <option *ngFor="let lp of catPais" [value]="lp.codigo">
                   {{ lp.descripcion }}
                 </option>
               </select>
@@ -316,7 +316,7 @@
                 placeholder=""
                 formControlName="departamento"
               >
-                <option *ngFor="let ld of catDepto" [ngValue]="ld.codigo">
+                <option *ngFor="let ld of catDepto" [value]="ld.codigo">
                   {{ ld.descripcion }}
                 </option>
               </select>
@@ -332,7 +332,7 @@
               >
                 <option
                   *ngFor="let lm of catMunicipiofilter"
-                  [ngValue]="lm.codigo"
+                  [value]="lm.codigo"
                 >
                   {{ lm.descripcion }}
                 </option>
@@ -445,7 +445,7 @@
                 placeholder=""
                 formControlName="sexo"
               >
-                <option *ngFor="let se of cat_sexo" [ngValue]="se.codigo">
+                <option *ngFor="let se of cat_sexo" [value]="se.codigo">
                   {{ se.descripcion }}
                 </option>
               </select>
@@ -476,7 +476,7 @@
               >
                 <option
                   *ngFor="let ctipodoc of cat_tipoDocIde"
-                  [ngValue]="ctipodoc.codigo"
+                  [value]="ctipodoc.codigo"
                 >
                   {{ ctipodoc.descripcion }}
                 </option>
@@ -507,7 +507,7 @@
               >
                 <option
                   *ngFor="let pp of catPaisPasaporte"
-                  [ngValue]="pp.codigo"
+                  [value]="pp.codigo"
                 >
                   {{ pp.descripcion }}
                 </option>
@@ -549,7 +549,7 @@
                   placeholder=""
                   formControlName="pais"
                 >
-                  <option *ngFor="let np of catPaisNac" [ngValue]="np.codigo">
+                  <option *ngFor="let np of catPaisNac" [value]="np.codigo">
                     {{ np.descripcion }}
                   </option>
                 </select>
@@ -563,7 +563,7 @@
                   placeholder=""
                   formControlName="departamento"
                 >
-                  <option *ngFor="let nd of catDeptoNac" [ngValue]="nd.codigo">
+                  <option *ngFor="let nd of catDeptoNac" [value]="nd.codigo">
                     {{ nd.descripcion }}
                   </option>
                 </select>
@@ -579,7 +579,7 @@
                 >
                   <option
                     *ngFor="let nm of catMunicipiofilterNac"
-                    [ngValue]="nm.codigo"
+                    [value]="nm.codigo"
                   >
                     {{ nm.descripcion }}
                   </option>
@@ -639,7 +639,7 @@
               >
                 <option
                   *ngFor="let cm of catCondicionMig"
-                  [ngValue]="cm.codigo"
+                  [value]="cm.codigo"
                 >
                   {{ cm.descripcion }}
                 </option>
@@ -721,7 +721,7 @@
                   placeholder=""
                   formControlName="pais"
                 >
-                  <option *ngFor="let rp of catPais" [ngValue]="rp.codigo">
+                  <option *ngFor="let rp of catPais" [value]="rp.codigo">
                     {{ rp.descripcion }}
                   </option>
                 </select>
@@ -735,7 +735,7 @@
                   placeholder=""
                   formControlName="departamento"
                 >
-                  <option *ngFor="let rd of catDepto" [ngValue]="rd.codigo">
+                  <option *ngFor="let rd of catDepto" [value]="rd.codigo">
                     {{ rd.descripcion }}
                   </option>
                 </select>
@@ -751,7 +751,7 @@
                 >
                   <option
                     *ngFor="let rm of catResiMunicipiofilter"
-                    [ngValue]="rm.codigo"
+                    [value]="rm.codigo"
                   >
                     {{ rm.descripcion }}
                   </option>
@@ -833,7 +833,7 @@
                 <br />
               </div>
               <form
-                #validationForm="ngForm"
+                #validationForm
                 [formGroup]="frmParamsTitPEP"
                 class="editForm"
                 novalidate
@@ -874,7 +874,7 @@
                       >
                         <option
                           *ngFor="let pe of catPais"
-                          [ngValue]="pe.codigo"
+                          [value]="pe.codigo"
                         >
                           {{ pe.descripcion }}
                         </option>
@@ -891,7 +891,7 @@
                       >
                         <option
                           *ngFor="let orp of catOrigenRiqPep"
-                          [ngValue]="orp.codigo"
+                          [value]="orp.codigo"
                         >
                           {{ orp.descripcion }}
                         </option>
@@ -990,7 +990,7 @@
                 <br />
               </div>
               <form
-                #validationForm="ngForm"
+                #validationForm
                 [formGroup]="frmParamsTitPariPEP"
                 class="editForm"
                 novalidate
@@ -1007,7 +1007,7 @@
                       >
                         <option
                           *ngFor="let p of catPerentescoPep"
-                          [ngValue]="p.codigo"
+                          [value]="p.codigo"
                         >
                           {{ p.descripcion }}
                         </option>
@@ -1159,7 +1159,7 @@
                       >
                         <option
                           *ngFor="let pe of catPais"
-                          [ngValue]="pe.codigo"
+                          [value]="pe.codigo"
                         >
                           {{ pe.descripcion }}
                         </option>
@@ -1246,7 +1246,7 @@
                 <br />
               </div>
               <form
-                #validationForm="ngForm"
+                #validationForm
                 [formGroup]="frmParamsTitAsoPEP"
                 class="editForm"
                 novalidate
@@ -1263,7 +1263,7 @@
                       >
                         <option
                           *ngFor="let ma of catMovAsociacionPep"
-                          [ngValue]="ma.codigo"
+                          [value]="ma.codigo"
                         >
                           {{ ma.descripcion }}
                         </option>
@@ -1415,7 +1415,7 @@
                       >
                         <option
                           *ngFor="let pe of catPais"
-                          [ngValue]="pe.codigo"
+                          [value]="pe.codigo"
                         >
                           {{ pe.descripcion }}
                         </option>
@@ -1526,7 +1526,7 @@
             <br />
           </div>
           <form
-            #validationForm="ngForm"
+            #validationForm
             [formGroup]="frmParamsInfoEco"
             class="editForm"
             novalidate
@@ -1583,7 +1583,7 @@
                       >
                         <option
                           *ngFor="let mon of catMoneda"
-                          [ngValue]="mon.codigo"
+                          [value]="mon.codigo"
                         >
                           {{ mon.descripcion }} ({{ mon.codigo }})
                         </option>
@@ -1825,7 +1825,7 @@
                       >
                         <option
                           *ngFor="let mon of catMoneda"
-                          [ngValue]="mon.codigo"
+                          [value]="mon.codigo"
                         >
                           {{ mon.descripcion }} ({{ mon.codigo }})
                         </option>
@@ -1965,7 +1965,7 @@
         <br />
       </div>
       <form
-        #validationForm="ngForm"
+        #validationForm
         [formGroup]="frmParamsRepresentante"
         class="editForm"
         novalidate
@@ -2100,7 +2100,7 @@
                 placeholder=""
                 formControlName="pais"
               >
-                <option *ngFor="let np of catPaisNac" [ngValue]="np.codigo">
+                <option *ngFor="let np of catPaisNac" [value]="np.codigo">
                   {{ np.descripcion }}
                 </option>
               </select>
@@ -2114,7 +2114,7 @@
                 placeholder=""
                 formControlName="departamento"
               >
-                <option *ngFor="let nd of catDeptoNac" [ngValue]="nd.codigo">
+                <option *ngFor="let nd of catDeptoNac" [value]="nd.codigo">
                   {{ nd.descripcion }}
                 </option>
               </select>
@@ -2130,7 +2130,7 @@
               >
                 <option
                   *ngFor="let nm of catMunicipiofilterNac"
-                  [ngValue]="nm.codigo"
+                  [value]="nm.codigo"
                 >
                   {{ nm.descripcion }}
                 </option>
@@ -2149,7 +2149,7 @@
               >
                 <option
                   *ngFor="let cm of catCondicionMig"
-                  [ngValue]="cm.codigo"
+                  [value]="cm.codigo"
                 >
                   {{ cm.descripcion }}
                 </option>
@@ -2231,7 +2231,7 @@
                 placeholder=""
                 formControlName="pais"
               >
-                <option *ngFor="let rp of catPais" [ngValue]="rp.codigo">
+                <option *ngFor="let rp of catPais" [value]="rp.codigo">
                   {{ rp.descripcion }}
                 </option>
               </select>
@@ -2245,7 +2245,7 @@
                 placeholder=""
                 formControlName="departamento"
               >
-                <option *ngFor="let rd of catDepto" [ngValue]="rd.codigo">
+                <option *ngFor="let rd of catDepto" [value]="rd.codigo">
                   {{ rd.descripcion }}
                 </option>
               </select>
@@ -2261,7 +2261,7 @@
               >
                 <option
                   *ngFor="let rm of catMunicipiofilter"
-                  [ngValue]="rm.codigo"
+                  [value]="rm.codigo"
                 >
                   {{ rm.descripcion }}
                 </option>
@@ -2327,7 +2327,7 @@
                 <br />
               </div>
               <form
-                #validationForm="ngForm"
+                #validationForm
                 [formGroup]="frmParamsRepPEP"
                 class="editForm"
                 novalidate
@@ -2368,7 +2368,7 @@
                       >
                         <option
                           *ngFor="let pe of catPais"
-                          [ngValue]="pe.codigo"
+                          [value]="pe.codigo"
                         >
                           {{ pe.descripcion }}
                         </option>
@@ -2385,7 +2385,7 @@
                       >
                         <option
                           *ngFor="let orp of catOrigenRiqPep"
-                          [ngValue]="orp.codigo"
+                          [value]="orp.codigo"
                         >
                           {{ orp.descripcion }}
                         </option>
@@ -2506,7 +2506,7 @@
                       >
                         <option
                           *ngFor="let p of catPerentescoPep"
-                          [ngValue]="p.codigo"
+                          [value]="p.codigo"
                         >
                           {{ p.descripcion }}
                         </option>
@@ -2658,7 +2658,7 @@
                       >
                         <option
                           *ngFor="let pe of catPais"
-                          [ngValue]="pe.codigo"
+                          [value]="pe.codigo"
                         >
                           {{ pe.descripcion }}
                         </option>
@@ -2750,7 +2750,7 @@
                 <br />
               </div>
               <form
-                #validationForm="ngForm"
+                #validationForm 
                 [formGroup]="frmParamsRepAsoPEP"
                 class="editForm"
                 novalidate
@@ -2767,7 +2767,7 @@
                       >
                         <option
                           *ngFor="let ma of catMovAsociacionPep"
-                          [ngValue]="ma.codigo"
+                          [value]="ma.codigo"
                         >
                           {{ ma.descripcion }}
                         </option>
@@ -2919,7 +2919,7 @@
                       >
                         <option
                           *ngFor="let pe of catPais"
-                          [ngValue]="pe.codigo"
+                          [value]="pe.codigo"
                         >
                           {{ pe.descripcion }}
                         </option>
