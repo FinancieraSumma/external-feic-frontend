@@ -24,10 +24,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 //import { SelectModule } from 'ng-select';
 import { SelectOptionService } from '../../../theme/shared/components/select/select-option.service';
 //import { CustomFormsModule } from 'ngx-custom-validators';
-import { CardComponent } from '../../../theme/shared/components/card/card.component';
 
 @NgModule({
-  declarations: [IndividualEditComponent, CardComponent],
+  declarations: [IndividualEditComponent],
   imports: [
     CommonModule,
     RouterModule,
